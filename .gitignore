@@ -4,6 +4,6 @@
 .DS_Store
 raw_data/
 *.csv
+*.parquet
 **/__pycache__/
-.env
 .env
