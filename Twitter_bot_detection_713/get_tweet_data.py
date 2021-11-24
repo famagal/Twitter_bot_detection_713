@@ -2,7 +2,6 @@ import pandas as pd
 import requests
 import time
 
-
 def get_tweet_data(user_df, headers):
     list_users = list(user_df['id'])
     bins = list(range(0, len(list_users), 900))
