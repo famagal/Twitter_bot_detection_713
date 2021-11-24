@@ -79,3 +79,22 @@ def user_df_cleaner(user_df):
     ]
 
     return user_df
+
+
+def get_final_tweet_data(en=False, write_to_parquet=False):
+
+    tweet_df = pd.read_parquet('../Twitter_bot_detection_713/data/tweets_df.parquet')
+    user_df = pd.read_csv('../raw_data/users_data.csv',
+                          sep='\t',
+                          lineterminator='\n')
+    t_df = tweet_df_cleaner(tweet_df)
+    u_df = user_df_cleaner(user_df)
+    target_join = u_df[['author_id', 'target']]
+    t_joined = t_df.merge(target_join, on='author_id', how='left')
+    if en == True:
+        t_joined = t_joined[t_joined['lang'] == 'en']
+    if write_to_parquet == True:
+        t_joined.to_parquet('../Twitter_bot_detection_713/data/tweets_final.parquet')
+        u_df.to_parquet('../Twitter_bot_detection_713/data/users_final.parquet')
+
+    return t_joined
