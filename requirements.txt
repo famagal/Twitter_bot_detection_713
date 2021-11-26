@@ -30,3 +30,7 @@ termcolor
 python-dotenv
 fastparquet
 pyarrow
+
+#text cleaning
+nltk
+
