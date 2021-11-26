@@ -7,5 +7,3 @@ raw_data/
 *.parquet
 **/__pycache__/
 .env
-.env
-.env
