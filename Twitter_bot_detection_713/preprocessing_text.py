@@ -48,7 +48,6 @@ def remove_at_mentions(text):
     return re.sub(r"(@\w+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)|^rt|http.+?", "",
                   text)
 
-
 def apply_text_cleaning(df, write_to_parquet=False):
 # Apply all cleaning transformations
     df['clean_text'] = df['text'].apply(remove_at_mentions).apply(
