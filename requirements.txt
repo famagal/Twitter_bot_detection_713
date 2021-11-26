@@ -28,6 +28,8 @@ joblib
 memoized-property
 termcolor
 python-dotenv
+fastparquet
+pyarrow
 
 #text cleaning
 nltk
