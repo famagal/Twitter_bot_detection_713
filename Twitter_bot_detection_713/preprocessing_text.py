@@ -54,7 +54,7 @@ def apply_text_cleaning(df, write_to_parquet=False):
     remove_punctuation).apply(lower_case).apply(remove_numbers).apply(
         remove_stopwords).apply(lemmatize).apply(list_to_string)
 
-    if write_to_parquet == True:
+    if write_to_parquet:
         clean_text = df[['clean_text','target']]
         clean_text.to_parquet('../Twitter_bot_detection_713/data/clean_text.parquet')
 
