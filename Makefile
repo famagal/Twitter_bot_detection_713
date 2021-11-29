@@ -53,3 +53,18 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+
+
+LOCAL_PATH='Twitter_bot_detection_713/data/y_train.pickle'
+
+PROJECT_ID=astute-arcanum-332414
+
+BUCKET_NAME=tweet-project-713
+
+BUCKET_FOLDER=data
+
+BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
+
+upload_data:
+	-@gsutil cp ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
