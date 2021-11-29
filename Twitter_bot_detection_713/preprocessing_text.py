@@ -49,13 +49,13 @@ def remove_at_mentions(text):
                   text)
 
 def apply_text_cleaning(df, write_to_parquet=False):
-# Apply all cleaning transformations
+    '''Apply all cleaning transformations and writes to parquet if write_to_parquet is set to True'''
     df['clean_text'] = df['text'].apply(remove_at_mentions).apply(
     remove_punctuation).apply(lower_case).apply(remove_numbers).apply(
         remove_stopwords).apply(lemmatize).apply(list_to_string)
 
     if write_to_parquet:
-        clean_text = df[['clean_text','target']]
+        clean_text = df[['author_id', 'clean_text', 'target']]
         clean_text.to_parquet('../Twitter_bot_detection_713/data/clean_text.parquet')
 
     return df
