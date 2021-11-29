@@ -5,7 +5,7 @@ from Twitter_bot_detection_713.DL_architectures import initialize_model_rnn2
 from tensorflow.keras.callbacks import EarlyStopping
 
 
-class Trainer():
+class Trainer_user():
    pass
 
 if __name__ == "__main__":
