@@ -1,5 +1,7 @@
 import pandas as pd
 from Twitter_bot_detection_713.utils import count_mentions, encoding_reply
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+import pickle
 
 
 def tweet_df_cleaner(df):
@@ -98,3 +100,38 @@ def get_final_tweet_data(en=False, write_to_parquet=False):
         u_df.to_parquet('../Twitter_bot_detection_713/data/users_final.parquet')
 
     return t_joined
+
+def get_embeded_data(nrows='all'):
+
+    pickle_in1 = open("data/X_train_embed.pickle", "rb")
+    X_train_embed = pickle.load(pickle_in1)
+    pickle_in2 = open("data/X_test_embed.pickle", "rb")
+    X_test_embed = pickle.load(pickle_in2)
+    pickle_in3 = open("data/y_train.pickle", "rb")
+    y_train = pickle.load(pickle_in3)
+    pickle_in4 = open("data/y_test.pickle", "rb")
+    y_test = pickle.load(pickle_in4)
+
+    if nrows == 'all':
+
+        X_test_pad = pad_sequences(X_test_embed,
+                               dtype='float32',
+                               padding='post',
+                               maxlen=60)
+        X_train_pad = pad_sequences(X_train_embed,
+                                dtype='float32',
+                                padding='post',
+                                maxlen=60)
+        return X_train_pad, X_test_pad, y_train, y_test
+
+    if type(nrows) == int:
+        X_test_pad = pad_sequences(X_test_embed[0:round(nrows*0.2)],
+                                   dtype='float32',
+                                   padding='post',
+                                   maxlen=60)
+        X_train_pad = pad_sequences(X_train_embed[0:nrows],
+                                    dtype='float32',
+                                    padding='post',
+                                    maxlen=60)
+
+        return X_train_pad, X_test_pad, y_train[0:nrows], y_test[0:round(nrows*0.2)]
