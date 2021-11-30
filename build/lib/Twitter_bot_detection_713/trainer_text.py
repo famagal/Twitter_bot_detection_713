@@ -20,21 +20,13 @@ class Trainer():
 
     def set_pipeline(self):
 
-        # for num columns needing both imputation AND scaling
-        num_imputer_scaler = Pipeline([
-            ('imputer',SimpleImputer(strategy='median')),
-            ('scaler', RobustScaler())])
-
-        # for num columns needing ONLY scaling
-        num_scaler = Pipeline([('scaler', RobustScaler())])
-
-        # Applying transformer into the preprocessor
-        preprocessor = ColumnTransformer([
-            ('num_imputer_scaler', num_imputer_scaler, ['lag_hours_std']),
-            ('num_scaler', num_scaler, ['user_followers_cnt',
+        preprocessor = Pipeline([
+            ('num_imputer', SimpleImputer(strategy='median'), ['lag_hours_std']),
+            ('num_tr', RobustScaler(), ['user_followers_cnt',
                                         'user_following_cnt',
                                         'user_tweet_count',
-                                        'user_list_count'])
+                                        'user_list_count',
+                                        'lag_hours_std']),
         ])
 
         self.pipeline = Pipeline([
