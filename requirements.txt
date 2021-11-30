@@ -33,3 +33,6 @@ pyarrow
 
 #text cleaning
 nltk
+
+#app
+streamlit
