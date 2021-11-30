@@ -53,6 +53,11 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+  
+###Streamlit command
+
+run_streamlit:
+	streamlit run Twitter_bot_detection_713/app.py
 
 
 ####GCP make commands
@@ -86,6 +91,7 @@ RUNTIME_VERSION=1.15
 upload_data:
 	-@gsutil cp ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
 
+
 gcp_submit_training:
 	gcloud ai-platform jobs submit training ${JOB_NAME} \
 		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
@@ -95,3 +101,5 @@ gcp_submit_training:
 		--runtime-version=${RUNTIME_VERSION} \
 		--region ${REGION} \
 		--stream-logs
+
+
