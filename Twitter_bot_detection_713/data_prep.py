@@ -3,6 +3,7 @@ from Twitter_bot_detection_713.utils import count_mentions, encoding_reply
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 import pickle
+from google.cloud import storage
 
 
 def tweet_df_cleaner(df):
@@ -102,16 +103,40 @@ def get_final_tweet_data(en=False, write_to_parquet=False):
 
     return t_joined
 
-def get_embeded_data(nrows='all'):
+def get_embeded_data(nrows='all', load_from_gcp=False):
 
-    pickle_in1 = open("data/pickled_data/X_train_embed.pickle", "rb")
-    X_train_embed = pickle.load(pickle_in1)
-    pickle_in2 = open("data/pickled_data/X_test_embed.pickle", "rb")
-    X_test_embed = pickle.load(pickle_in2)
-    pickle_in3 = open("data/pickled_data/y_train.pickle", "rb")
-    y_train = pickle.load(pickle_in3)
-    pickle_in4 = open("data/pickled_data/y_test.pickle", "rb")
-    y_test = pickle.load(pickle_in4)
+    if load_from_gcp:
+
+        storage_client = storage.Client()
+        bucket = storage_client.bucket('tweet-project-713')
+
+        blob1 = bucket.blob('data/X_train_embed_25.pickle')
+        pickle_in = blob1.download_as_string()
+        X_train_embed = pickle.loads(pickle_in)
+        blob2 = bucket.blob('data/X_test_embed_25.pickle')
+        pickle_in = blob2.download_as_string()
+        X_test_embed = pickle.loads(pickle_in)
+        blob3 = bucket.blob('data/y_train_25.pickle')
+        pickle_in = blob3.download_as_string()
+        y_train = pickle.loads(pickle_in)
+        blob4 = bucket.blob('data/y_test_25.pickle')
+        pickle_in = blob4.download_as_string()
+        y_test = pickle.loads(pickle_in)
+        print('data loaded succesfully from gcp')
+
+
+    else:
+
+        pickle_in1 = open("data/pickled_data/X_train_embed_25.pickle", "rb")
+        X_train_embed = pickle.load(pickle_in1)
+        pickle_in2 = open("data/pickled_data/X_test_embed_25.pickle", "rb")
+        X_test_embed = pickle.load(pickle_in2)
+        pickle_in3 = open("data/pickled_data/y_train.pickle", "rb")
+        y_train = pickle.load(pickle_in3)
+        pickle_in4 = open("data/pickled_data/y_test.pickle", "rb")
+        y_test = pickle.load(pickle_in4)
+
+
 
     if nrows == 'all':
 
@@ -126,6 +151,7 @@ def get_embeded_data(nrows='all'):
         return X_train_pad, X_test_pad, y_train, y_test
 
     if type(nrows) == int:
+        print(X_test_embed.shape)
         X_test_pad = pad_sequences(X_test_embed[0:round(nrows*0.2)],
                                    dtype='float32',
                                    padding='post',
@@ -137,10 +163,19 @@ def get_embeded_data(nrows='all'):
 
         return X_train_pad, X_test_pad, y_train[0:nrows], y_test[0:round(nrows*0.2)]
 
-def get_user_training_data():
-    df = pd.read_csv('../raw_data/users_data.csv',
-                     sep='\t',
-                     lineterminator='\n')
+def get_user_training_data(load_from_gcp=False):
+
+    if load_from_gcp:
+
+        df = pd.read_csv('gs://tweet-project-713/data/users_data.csv',
+                         sep='\t',
+                         lineterminator='\n')
+
+    else:
+        df = pd.read_csv('../raw_data/users_data.csv',
+                         sep='\t',
+                         lineterminator='\n')
+
     df = user_df_cleaner(df)
     X = df.drop(columns='target')
     y = df['target'].map(lambda x: 1 if x == 'bot' else 0)

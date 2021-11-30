@@ -55,8 +55,9 @@ pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
 
 
+####GCP make commands
 
-LOCAL_PATH='Twitter_bot_detection_713/data/pickled_data/X_train_embed_25.pickle'
+LOCAL_PATH='Twitter_bot_detection_713/data/pickled_data/y_test_25.pickle'
 
 PROJECT_ID=astute-arcanum-332414
 
@@ -66,5 +67,31 @@ BUCKET_FOLDER=data
 
 BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
 
+BUCKET_TRAINING_FOLDER = 'trainings'
+
+PACKAGE_NAME=Twitter_bot_detection_713
+
+FILENAME=trainer_text
+
+JOB_NAME=Twitter_bot_detection_models_$(shell date +'%Y%m%d_%H%M%S')
+
+REGION=europe-west1
+
+PYTHON_VERSION=3.7
+
+FRAMEWORK=scikit-learn
+
+RUNTIME_VERSION=1.15
+
 upload_data:
 	-@gsutil cp ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
+
+gcp_submit_training:
+	gcloud ai-platform jobs submit training ${JOB_NAME} \
+		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
+		--package-path ${PACKAGE_NAME} \
+		--module-name ${PACKAGE_NAME}.${FILENAME} \
+		--python-version=${PYTHON_VERSION} \
+		--runtime-version=${RUNTIME_VERSION} \
+		--region ${REGION} \
+		--stream-logs
