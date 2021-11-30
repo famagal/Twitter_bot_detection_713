@@ -1,6 +1,7 @@
 import pandas as pd
 from Twitter_bot_detection_713.utils import count_mentions, encoding_reply
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from sklearn.model_selection import train_test_split
 import pickle
 
 
@@ -103,13 +104,13 @@ def get_final_tweet_data(en=False, write_to_parquet=False):
 
 def get_embeded_data(nrows='all'):
 
-    pickle_in1 = open("data/X_train_embed.pickle", "rb")
+    pickle_in1 = open("data/pickled_data/X_train_embed.pickle", "rb")
     X_train_embed = pickle.load(pickle_in1)
-    pickle_in2 = open("data/X_test_embed.pickle", "rb")
+    pickle_in2 = open("data/pickled_data/X_test_embed.pickle", "rb")
     X_test_embed = pickle.load(pickle_in2)
-    pickle_in3 = open("data/y_train.pickle", "rb")
+    pickle_in3 = open("data/pickled_data/y_train.pickle", "rb")
     y_train = pickle.load(pickle_in3)
-    pickle_in4 = open("data/y_test.pickle", "rb")
+    pickle_in4 = open("data/pickled_data/y_test.pickle", "rb")
     y_test = pickle.load(pickle_in4)
 
     if nrows == 'all':
@@ -135,3 +136,16 @@ def get_embeded_data(nrows='all'):
                                     maxlen=60)
 
         return X_train_pad, X_test_pad, y_train[0:nrows], y_test[0:round(nrows*0.2)]
+
+def get_user_training_data():
+    df = pd.read_csv('../raw_data/users_data.csv',
+                     sep='\t',
+                     lineterminator='\n')
+    df = user_df_cleaner(df)
+    X = df.drop(columns='target')
+    y = df['target'].map(lambda x: 1 if x == 'bot' else 0)
+    X_train_user, x_test_user, y_train_user, y_test_user = train_test_split(X,
+                                                        y,
+                                                        test_size=0.2,
+                                                        random_state=0)
+    return X_train_user, x_test_user, y_train_user, y_test_user

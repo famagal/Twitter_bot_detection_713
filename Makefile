@@ -56,7 +56,7 @@ pypi:
 
 
 
-LOCAL_PATH='Twitter_bot_detection_713/data/y_train.pickle'
+LOCAL_PATH='Twitter_bot_detection_713/data/pickled_data/X_train_embed_25.pickle'
 
 PROJECT_ID=astute-arcanum-332414
 
