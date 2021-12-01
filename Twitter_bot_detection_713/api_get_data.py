@@ -26,5 +26,28 @@ def user_data_request(username):
     ]]
     return user_processed
 
-def tweet_data_request(user_id):
+def tweet_data_request(user_processed):
+    user_processed['id']
+    try:
+        request.get('')['data']
+    except:
+        return pd.DataFrame({'empty':0})
+
+
+def user_preprocessing(tweet_df, user_processed):
+    #if tweet_df['empty'] in tweet_df.keys():
     pass
+
+def tweet_preprocessing(tweet_df):
+    pass
+    ##returns padded X_train, padded y_train
+
+
+
+### user inputs username
+###user_data_request is called
+###user_data_request(username)
+###returns user_df
+###calls tweet_data_request(user_df)
+###returns_tweets_df_cleaned = tweets_df
+##user_processing(tweets_df, user_processed)
