@@ -71,4 +71,4 @@ upload_data:
 
 
 run_streamlit:
-	streamlit run Twitter_bot_detection_713/app.py
+	streamlit run app.py
