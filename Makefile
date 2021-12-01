@@ -92,6 +92,10 @@ upload_data:
 	-@gsutil cp ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
 
 
+
+run_streamlit:
+	streamlit run app.py
+
 gcp_submit_training:
 	gcloud ai-platform jobs submit training ${JOB_NAME} \
 		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
@@ -105,3 +109,4 @@ gcp_submit_training:
 
 ##--scale-tier custom \
 		--master-machine-type n1-highmem-32 \
+
