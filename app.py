@@ -5,12 +5,12 @@ import pandas as pd
 #import matplotlib.pyplot as plt
 #import altair as alt
 from PIL import Image
-#from Twitter_bot_detection_713.data_prep import user_df_cleaner
+from Twitter_bot_detection_713.data_prep import user_df_cleaner
 
-#user_df = pd.read_csv('raw_data/users_data.csv',
-                      #sep='\t',
-                      #lineterminator='\n')
-#df = user_df_cleaner(user_df)
+user_df = pd.read_csv('raw_data/users_data.csv',
+                      sep='\t',
+                      lineterminator='\n')
+df = user_df_cleaner(user_df)
 
 
 ### Top of page - Title, etc
