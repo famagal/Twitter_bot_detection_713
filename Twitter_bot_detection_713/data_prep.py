@@ -90,8 +90,7 @@ def user_df_cleaner(user_df):
 
     ### join in lag_hours
     # join
-    tweet_df = pd.read_parquet(
-        '../Twitter_bot_detection_713/data/tweets_df.parquet')
+    tweet_df = pd.read_parquet('gs://tweet-project-713/data/tweets_df.parquet')
     tweet_clean = tweet_df_cleaner(tweet_df)
     tweet_clean = tweet_clean[['author_id', 'lag']]
     tweet_clean['lag_hours'] = (pd.to_numeric(
@@ -146,16 +145,16 @@ def get_embeded_data(nrows='all', load_from_gcp=False):
         storage_client = storage.Client()
         bucket = storage_client.bucket('tweet-project-713')
 
-        blob1 = bucket.blob('data/X_train_embed_25.pickle')
+        blob1 = bucket.blob('data/X_train_embed.pickle')
         pickle_in = blob1.download_as_string()
         X_train_embed = pickle.loads(pickle_in)
-        blob2 = bucket.blob('data/X_test_embed_25.pickle')
+        blob2 = bucket.blob('data/X_test_embed.pickle')
         pickle_in = blob2.download_as_string()
         X_test_embed = pickle.loads(pickle_in)
-        blob3 = bucket.blob('data/y_train_25.pickle')
+        blob3 = bucket.blob('data/y_train.pickle')
         pickle_in = blob3.download_as_string()
         y_train = pickle.loads(pickle_in)
-        blob4 = bucket.blob('data/y_test_25.pickle')
+        blob4 = bucket.blob('data/y_test.pickle')
         pickle_in = blob4.download_as_string()
         y_test = pickle.loads(pickle_in)
         print('data loaded succesfully from gcp')
@@ -202,7 +201,7 @@ def get_embeded_data(nrows='all', load_from_gcp=False):
 
 def get_user_training_data(load_from_gcp=False):
     # Read and clean data
-    
+
     if load_from_gcp:
 
         df = pd.read_csv('gs://tweet-project-713/data/users_data.csv',
@@ -230,5 +229,5 @@ def get_user_training_data(load_from_gcp=False):
                                                         y,
                                                         test_size=0.2,
                                                         random_state=0)
-    
+
     return X_train_user, x_test_user, y_train_user, y_test_user

@@ -53,7 +53,7 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
-  
+
 ###Streamlit command
 
 run_streamlit:
@@ -80,7 +80,7 @@ FILENAME=trainer_text
 
 JOB_NAME=Twitter_bot_detection_models_$(shell date +'%Y%m%d_%H%M%S')
 
-REGION=europe-west1
+REGION=us-central1
 
 PYTHON_VERSION=3.7
 
@@ -103,3 +103,5 @@ gcp_submit_training:
 		--stream-logs
 
 
+##--scale-tier custom \
+		--master-machine-type n1-highmem-32 \
