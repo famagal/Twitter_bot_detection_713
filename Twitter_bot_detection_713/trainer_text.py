@@ -1,6 +1,6 @@
 from Twitter_bot_detection_713.new_preprocessing_text import apply_text_cleaning
 from Twitter_bot_detection_713.data_prep import get_embeded_data, get_user_training_data
-from Twitter_bot_detection_713.DL_architectures import initialize_model_rnn2_25
+from Twitter_bot_detection_713.DL_architectures import initialize_model_rnn2_25, initialize_model_rnn_big
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import RobustScaler
 from sklearn.pipeline import Pipeline
@@ -60,19 +60,19 @@ class Trainer():
 if __name__ == "__main__":
     print('TEXT MODEL RUNNING')
     print('loading embedded data...')
-    X_train_pad, X_test_pad, y_train, y_test = get_embeded_data(nrows=100, load_from_gcp=True)
+    X_train_pad, X_test_pad, y_train, y_test = get_embeded_data(nrows='all', load_from_gcp=True)
     es = EarlyStopping(patience=5, restore_best_weights=True)
     print('initializing model...')
-    text_model = initialize_model_rnn2_25()
+    text_model = initialize_model_rnn_big()
     print('training_model...')
     history = text_model.fit(X_train_pad,
                                     y_train,
-                                    epochs=30,
-                                    batch_size=16,
+                                    epochs=15,
+                                    batch_size=128,
                                     validation_split=0.3,
                                     callbacks=[es])
 
-    save_nn_to_gcp(text_model, 'RNN1')
+    save_nn_to_gcp(text_model, 'RNN_BIG')
     print('USER MODEL RUNNING')
     print('loading user training data...')
     X_train_user, X_test_user, y_train_user, y_test_user = get_user_training_data(load_from_gcp=True
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     print('training model')
     user_trainer = Trainer(X_train=X_train_user, y_train=y_train_user, X_test=X_test_user, y_test=y_test_user)
     user_trainer.run()
-    save_model_to_gcp(user_trainer, 'Logit1')
+    save_model_to_gcp(user_trainer, 'Logit_opt')
     print('EVALUATING TEXT MODEL...')
     print(text_model.evaluate(X_test_pad,y_test))
     print('EVALUATING USER MODEL...')
