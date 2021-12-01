@@ -1,16 +1,16 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import altair as alt
+#import numpy as np
+#import seaborn as sns
+#import matplotlib.pyplot as plt
+#import altair as alt
 from PIL import Image
-from Twitter_bot_detection_713.data_prep import user_df_cleaner
+#from Twitter_bot_detection_713.data_prep import user_df_cleaner
 
-user_df = pd.read_csv('raw_data/users_data.csv',
-                      sep='\t',
-                      lineterminator='\n')
-df = user_df_cleaner(user_df)
+#user_df = pd.read_csv('raw_data/users_data.csv',
+                      #sep='\t',
+                      #lineterminator='\n')
+#df = user_df_cleaner(user_df)
 
 
 ### Top of page - Title, etc
@@ -31,13 +31,13 @@ st.markdown('##')
 
 ### Showing scatter plot
 st.subheader('Number of followers in relation to the number of tweets')
-c = alt.Chart(df).mark_circle(size=30).encode(
-    x='user_followers_cnt',
-    y='user_tweet_count',
-    color='target',
-    tooltip=['user_followers_cnt', 'user_tweet_count', 'target'])
+#c = alt.Chart(df).mark_circle(size=30).encode(
+    #x='user_followers_cnt',
+    #y='user_tweet_count',
+    #color='target',
+    #tooltip=['user_followers_cnt', 'user_tweet_count', 'target'])
 
-st.altair_chart(c, use_container_width=True)
+#st.altair_chart(c, use_container_width=True)
 
 st.markdown("""The displayed graph shows a very clear relationship between the number of followers
             for a human and a bot in relation to the number of posted tweets.
