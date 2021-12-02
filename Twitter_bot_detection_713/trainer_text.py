@@ -6,7 +6,7 @@ from sklearn.preprocessing import RobustScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 from Twitter_bot_detection_713.gcp_training import save_model_to_gcp, save_model, save_nn, save_nn_to_gcp
 
@@ -38,9 +38,8 @@ class Trainer():
         ])
 
         self.pipeline = Pipeline([
-                ('preprocessor', preprocessor),
-                ('log_reg', LogisticRegression())
-                ])
+            ('preprocessor', preprocessor),
+            ('rand_forest', RandomForestClassifier(n_estimators=100))])
 
     def run(self):
         self.set_pipeline()
