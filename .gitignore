@@ -4,7 +4,7 @@
 .DS_Store
 raw_data/
 *.csv
-*.parquet
+Twitter_bot_detection_713/data/*.parquet
 **/__pycache__/
 .env
 *.pickle
