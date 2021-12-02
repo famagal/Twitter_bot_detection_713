@@ -7,7 +7,7 @@ import pandas as pd
 #import matplotlib.pyplot as plt
 import altair as alt
 from PIL import Image
-from Twitter_bot_detection_713.data_prep import user_df_cleaner
+#from Twitter_bot_detection_713.data_prep import user_df_cleaner
 
 df = pd.read_parquet('user_data_clean.parquet')
 
