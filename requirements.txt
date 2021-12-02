@@ -39,6 +39,7 @@ pyarrow
 
 #text cleaning
 nltk
+gensim
 
 #app
 streamlit
