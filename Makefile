@@ -109,4 +109,3 @@ gcp_submit_training:
 
 ##--scale-tier custom \
 		--master-machine-type n1-highmem-32 \
-
