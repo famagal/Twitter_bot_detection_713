@@ -1,4 +1,5 @@
 from numpy.core.fromnumeric import size
+from numpy.lib.type_check import imag
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,41 +9,50 @@ import altair as alt
 from PIL import Image
 from Twitter_bot_detection_713.data_prep import user_df_cleaner
 
-user_df = pd.read_csv('raw_data/users_data.csv', sep='\t', lineterminator='\n')
-df = user_df_cleaner(user_df)
+df = pd.read_parquet('user_data_clean.parquet')
+
+
+primaryColor = "purple"
 
 ### Sidebar
 selection = st.sidebar.selectbox("Choose", ["Tweet detection", "Analysis"])
+st.sidebar.markdown('##')
+image_sidebar= Image.open('streamlit_data/lewagon.png')
+st.sidebar.image(image_sidebar)
+st.sidebar.markdown('##')
+st.sidebar.markdown('##')
+st.sidebar.markdown('##')
+st.sidebar.markdown('##')
+st.sidebar.markdown('**Le Wagon Data Science Batch 713**')
+st.sidebar.markdown('**Alves, Marinescu, Neurauter**')
+
+
 
 ### BOT PART
 if selection == "Tweet detection":
     ### Main part
     ### Top of page - Title, etc
+    st.title('Twitter Bot Detection')
     image_header = Image.open('streamlit_data/twitter-bot-verified.png')
     st.image(image_header, width=700)
     st.markdown('Image_Source: 2021, The Daily Dot, LLC')
 
-    st.title('Twitter Bot Detection')
     st.header('Is this user a human or a bot?')
     st.subheader("Let's find out!")
 
-    col1, col2 = st.columns(2)
 
-    with col1:
-        st.subheader("Insert Twitter post")
-        title = st.text_input('The Post')
-        st.write('This Twitter post was written by a', title)
+    st.subheader("Insert a Username")
+    title = st.text_input('Username')
+    st.write('This Twitter post was written by a', title)
 
-    with col2:
-        st.subheader("Place Author ID")
-        title = st.text_input('Author ID')
-        st.write('This author is a', title)
+
 
 ### ANALYSIS PART
 
 if selection == "Analysis":
     ### Space between headers and graph
-    st.markdown('##')
+    st.header('Further Analysis')
+
     st.write(
         """Since there are a lot of people on Twitter, posting a lot things it is hard
             to distinguih which Twitter post was written and published by a human or a bot.
