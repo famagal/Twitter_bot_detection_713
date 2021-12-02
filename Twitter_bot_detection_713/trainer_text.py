@@ -37,9 +37,9 @@ class Trainer():
                                         'user_list_count'])
         ])
 
-        self.pipeline = Pipeline([('preprocessor', preprocessor),
-                                  ('rand_forest',
-                                   RandomForestClassifier(n_estimators=100))])
+        self.pipeline = Pipeline([
+            ('preprocessor', preprocessor),
+            ('rand_forest', RandomForestClassifier(n_estimators=100))])
 
     def run(self):
         self.set_pipeline()
