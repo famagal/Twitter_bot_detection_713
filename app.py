@@ -2,9 +2,9 @@ from numpy.core.fromnumeric import size
 from numpy.lib.type_check import imag
 import streamlit as st
 import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
+#import numpy as np
+#import seaborn as sns
+#import matplotlib.pyplot as plt
 import altair as alt
 from PIL import Image
 from Twitter_bot_detection_713.data_prep import user_df_cleaner
@@ -103,19 +103,18 @@ if selection == "Analysis":
 
     ### Wordcloud
     st.subheader('Who uses which words?')
-    col1, col2 = st.columns(2)
 
-    with col1:
-        st.subheader("Wordcloud Bots")
-        image_cloud_bot = Image.open('streamlit_data/wordcloud_bot_500.png')
-        st.image(image_cloud_bot,
-                 caption='Most used words in tweets by bots',
-                 use_column_width='auto')
 
-    with col2:
-        st.subheader("Wordcloud Humans")
-        image_cloud_human = Image.open(
+
+    st.subheader("Wordcloud Bots")
+    image_cloud_bot = Image.open('streamlit_data/wordcloud_bot_500.png')
+    st.image(image_cloud_bot,
+             caption='Most used words in tweets by bots',
+             width=666)
+
+    st.subheader("Wordcloud Humans")
+    image_cloud_human = Image.open(
             'streamlit_data/wordcloud_human_500.png')
-        st.image(image_cloud_human,
-                 caption='Most used words in tweets by humans',
-                 use_column_width='auto')
+    st.image(image_cloud_human,
+             caption='Most used words in tweets by humans',
+             width=666)
