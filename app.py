@@ -55,22 +55,16 @@ if selection == "Tweet detection":
     username = ''
 
     st.subheader("Insert a Username")
-    title = st.text_input('Username', value = username)
+    name = st.text_input('Username', value = username)
 
     ### Predicted Outcome
-    st.write(title, 'is definitely ' )
+    st.write(name, 'is definitely ' )
 
     #params = dict(key='anything',
-    #             pickup_datetime=pickup_datetime,
-    #            pickup_longitude=pickup_longitude,
-    #           pickup_latitude=pickup_latitude,
-    #          dropoff_longitude=dropoff_longitude,
-    #         dropoff_latitude=dropoff_latitude,
-    #        passenger_count=int(passenger_count))
-
-
+    #               username=username)
 
     #url = 'https://taxifare.lewagon.ai/predict'
+
     # retrieve the response
     #response = requests.get(url, params=params)
 
@@ -81,10 +75,7 @@ if selection == "Tweet detection":
 
     #response.status_code
     #predicted_user = response.json().get("prediction", "no prediction")
-    #st.markdown(f'# {predicted_user}')
-
-
-
+    #st.markdown(f'name, #is definitly a {predicted_user}')
 
 
 
