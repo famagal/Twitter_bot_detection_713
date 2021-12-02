@@ -2,12 +2,14 @@ from numpy.core.fromnumeric import size
 from numpy.lib.type_check import imag
 import streamlit as st
 import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
+#import numpy as np
+#import seaborn as sns
+#import matplotlib.pyplot as plt
+import requests
 import altair as alt
 from PIL import Image
-from Twitter_bot_detection_713.data_prep import user_df_cleaner
+
+
 
 df = pd.read_parquet('user_data_clean.parquet')
 
@@ -17,12 +19,13 @@ primaryColor = "purple"
 ### Sidebar
 selection = st.sidebar.selectbox("Choose", ["Tweet detection", "Analysis"])
 st.sidebar.markdown('##')
+st.sidebar.markdown('##')
 image_sidebar= Image.open('streamlit_data/lewagon.png')
 st.sidebar.image(image_sidebar)
 st.sidebar.markdown('##')
-st.sidebar.markdown('##')
-st.sidebar.markdown('##')
-st.sidebar.markdown('##')
+st.sidebar.markdown(
+    """<hr style="height:2.5px;border:none;color:#333;background-color:#333;" /> """,
+    unsafe_allow_html=True)
 st.sidebar.markdown('**Le Wagon Data Science Batch 713**')
 st.sidebar.markdown('**Alves, Marinescu, Neurauter**')
 
@@ -32,18 +35,57 @@ st.sidebar.markdown('**Alves, Marinescu, Neurauter**')
 if selection == "Tweet detection":
     ### Main part
     ### Top of page - Title, etc
-    st.title('Twitter Bot Detection')
+    st.title('The Twitter Bot Recognizer')
     image_header = Image.open('streamlit_data/twitter-bot-verified.png')
-    st.image(image_header, width=700)
-    st.markdown('Image_Source: 2021, The Daily Dot, LLC')
+    st.image(image_header, width=707)
+    st.markdown("<style>.big-font {font-size:10px !important;}</style>",
+                unsafe_allow_html=True)
+    st.markdown('<p class="big-font">Image_Source: 2021, The Daily Dot, LLC</p>',
+                unsafe_allow_html=True)
 
-    st.header('Is this user a human or a bot?')
+
+
+    st.header('Is the user a human or a bot?')
     st.subheader("Let's find out!")
 
+    st.markdown(
+        """<hr style="height:4.5px;border:none;color:#333;background-color:#333;" /> """,
+        unsafe_allow_html=True)
+
+    username = ''
 
     st.subheader("Insert a Username")
-    title = st.text_input('Username')
-    st.write('This Twitter post was written by a', title)
+    title = st.text_input('Username', value = username)
+
+    ### Predicted Outcome
+    st.write(title, 'is definitely ' )
+
+    #params = dict(key='anything',
+    #             pickup_datetime=pickup_datetime,
+    #            pickup_longitude=pickup_longitude,
+    #           pickup_latitude=pickup_latitude,
+    #          dropoff_longitude=dropoff_longitude,
+    #         dropoff_latitude=dropoff_latitude,
+    #        passenger_count=int(passenger_count))
+
+
+
+    #url = 'https://taxifare.lewagon.ai/predict'
+    # retrieve the response
+    #response = requests.get(url, params=params)
+
+    #if response.status_code == 200:
+     #   print("API call success")
+    #else:
+     #   print("API call error")
+
+    #response.status_code
+    #predicted_user = response.json().get("prediction", "no prediction")
+    #st.markdown(f'# {predicted_user}')
+
+
+
+
 
 
 
@@ -103,19 +145,18 @@ if selection == "Analysis":
 
     ### Wordcloud
     st.subheader('Who uses which words?')
-    col1, col2 = st.columns(2)
 
-    with col1:
-        st.subheader("Wordcloud Bots")
-        image_cloud_bot = Image.open('streamlit_data/wordcloud_bot_500.png')
-        st.image(image_cloud_bot,
-                 caption='Most used words in tweets by bots',
-                 use_column_width='auto')
 
-    with col2:
-        st.subheader("Wordcloud Humans")
-        image_cloud_human = Image.open(
+
+    st.subheader("Wordcloud Bots")
+    image_cloud_bot = Image.open('streamlit_data/wordcloud_bot_500.png')
+    st.image(image_cloud_bot,
+             caption='Most used words in tweets by bots',
+             width=666)
+
+    st.subheader("Wordcloud Humans")
+    image_cloud_human = Image.open(
             'streamlit_data/wordcloud_human_500.png')
-        st.image(image_cloud_human,
-                 caption='Most used words in tweets by humans',
-                 use_column_width='auto')
+    st.image(image_cloud_human,
+             caption='Most used words in tweets by humans',
+             width=666)
