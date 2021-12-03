@@ -74,9 +74,9 @@ if selection == "Tweet detection":
 
         elif predicted_user['tweet_level_prediction'] == 'could not fetch tweets for the specified user':
             st.markdown('''We could not fetch any tweets for this user.
-                        Predictions will be made solely on user-lever data.''')
+                        Predictions will be made solely on user-lever data and therefore, might not be very accurate.''')
             user_pred = predicted_user['user_level_prediction']
-            if user_pred == '0':
+            if user_pred == '[0]':
                 bot_pred = round((1 - float(predicted_user['bot_proba_user'])) * 100)
                 pred = 'human'
             else:
@@ -84,9 +84,9 @@ if selection == "Tweet detection":
                 pred = 'bot'
 
 
-            st.markdown("<style>.big-font {font-size:50px !important;}</style>",
+            st.markdown("<style>.result1-font {font-size:20px !important;}</style>",
                         unsafe_allow_html=True)
-            st.markdown(f'''<p class="big-font">{name} is definitely a ***{pred}***.</p>''',
+            st.markdown(f'''<p class="result1-font">{name} is propably a {pred}.</p>''',
                         unsafe_allow_html=True)
 
             st.markdown(f'''
@@ -95,37 +95,55 @@ if selection == "Tweet detection":
                         ''')
 
         else:
-            if predicted_user['user_level_prediction']== '0':
-                user_pred = 'human'
-                user_proba = bot_pred = round((1 - float(predicted_user['bot_proba_user'])) * 100)
+            if predicted_user['user_level_prediction'] != predicted_user['tweet_level_prediction'][0]:
+                if predicted_user['user_level_prediction'] == '0':
+                    user_pred = 'human'
+                    user_proba = bot_pred = round((1 - float(predicted_user['bot_proba_user'])) * 100)
+                else:
+                    user_pred = 'bot'
+                    user_proba = round(float(predicted_user['bot_proba_user']) * 100)
+
+                st.markdown(f'''Oops, our algorithm is confused. However, most likely we can say with ***{user_proba}%*** certainty that
+                        the chosen user is a ***{user_pred}***.''')
             else:
-                user_pred = 'bot'
-                user_proba = round(float(predicted_user['bot_proba_user']) * 100)
 
-            if  predicted_user['tweet_level_prediction'] == '0.0':
-                tweet_pred = 'human'
-                tweet_proba = round((1 - float(predicted_user['tweet_proba'])) * 100)
-            else:
-                tweet_pred = 'bot'
-                tweet_proba = round(float(predicted_user['tweet_proba']) * 100)
+                if predicted_user['user_level_prediction'] == '0':
+                    user_pred = 'human'
+                    user_proba = bot_pred = round((1 - float(predicted_user['bot_proba_user'])) * 100)
+                else:
+                    user_pred = 'bot'
+                    user_proba = round(float(predicted_user['bot_proba_user']) * 100)
 
-
-            st.markdown("<style>.result-font {font-size:20px !important;}</style>",
-                        unsafe_allow_html=True)
-            st.markdown(
-                f'''<p class="result-font">{name} is definitely a {user_pred}.</p>''',
-                unsafe_allow_html=True)
-
-            st.markdown(f'''
-                        Accordingly to user-level data we can say with ***{user_proba}%*** certainty that
-                        the chosen user is a ***{user_pred}***.
-                        ''')
-            st.markdown(f'''
-                        Accordingly to tweet-level data we can say with ***{tweet_proba}%*** certainty that
-                        the chosen user is a ***{tweet_pred}***.
-                        ''')
+                if  predicted_user['tweet_level_prediction'] == '0.0':
+                    tweet_pred = 'human'
+                    tweet_proba = round((1 - float(predicted_user['tweet_proba'])) * 100)
+                else:
+                    tweet_pred = 'bot'
+                    tweet_proba = round(float(predicted_user['tweet_proba']) * 100)
 
 
+                st.markdown("<style>.result2-font {font-size:20px !important;}</style>",
+                            unsafe_allow_html=True)
+                st.markdown(
+                    f'''<p class="result2-font">{name} is definitely a {user_pred}.</p>''',
+                    unsafe_allow_html=True)
+
+                st.markdown(f'''
+                            Accordingly to user-level data we can say with ***{user_proba}%*** certainty that
+                            the chosen user is a ***{user_pred}***.
+                            ''')
+                st.markdown(f'''
+                            Accordingly to tweet-level data we can say with ***{tweet_proba}%*** certainty that
+                            the chosen user is a ***{tweet_pred}***.
+                            ''')
+
+
+        st.markdown("<style>.source-font {font-size:12px !important;}</style>", unsafe_allow_html=True)
+        st.markdown(
+                    '''<p class="source-font"> * If you want to know more about the differences between user-level -and tweet-level data,
+                you can go to our analysis part.
+                Just click on the drop down menu on the top left corner of the page.</p>''',
+                    unsafe_allow_html=True)
 
 
 ### ANALYSIS PART
@@ -133,6 +151,8 @@ if selection == "Tweet detection":
 if selection == "Analysis":
     ### Space between headers and graph
     st.header('Further Analysis')
+    st.subheader('Work in progress..')
+
 
     st.write(
         """Since there are a lot of people on Twitter, posting a lot things it is hard
