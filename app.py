@@ -52,31 +52,78 @@ if selection == "Tweet detection":
         """<hr style="height:4.5px;border:none;color:#333;background-color:#333;" /> """,
         unsafe_allow_html=True)
 
-    username = ''
+
 
     st.subheader("Insert a Username")
-    name = st.text_input('Username', value = username)
 
-    ### Predicted Outcome
-    st.write(name, 'is definitely ' )
+    name = st.text_input('Username')
 
-    #params = dict(key='anything',
-    #               username=username)
+    if name:
+
+        url = f'https://api-twitter-bot-detection-project-enpnocbhoq-uc.a.run.app/predict?username={name}'
 
 
-    #url = 'https://taxifare.lewagon.ai/predict'
+        # retrieve the response
+        response = requests.get(url)
 
-    # retrieve the response
-    #response = requests.get(url, params=params)
+        predicted_user = response.json()
 
-    #if response.status_code == 200:
-     #   print("API call success")
-    #else:
-     #   print("API call error")
+        if 'oops' in predicted_user.keys():
+            st.markdown('Oops we could not find this user. Please try again with different username.')
 
-    #response.status_code
-    #predicted_user = response.json().get("prediction", "no prediction")
-    #st.markdown(f'name, #is definitly a {predicted_user}')
+
+        elif predicted_user['tweet_level_prediction'] == 'could not fetch tweets for the specified user':
+            st.markdown('''We could not fetch any tweets for this user.
+                        Predictions will be made solely on user-lever data.''')
+            user_pred = predicted_user['user_level_prediction']
+            if user_pred == '0':
+                bot_pred = round((1 - float(predicted_user['bot_proba_user'])) * 100)
+                pred = 'human'
+            else:
+                bot_pred = round(float(predicted_user['bot_proba_user']) *100)
+                pred = 'bot'
+
+
+            st.markdown("<style>.big-font {font-size:50px !important;}</style>",
+                        unsafe_allow_html=True)
+            st.markdown(f'''<p class="big-font">{name} is definitely a ***{pred}***.</p>''',
+                        unsafe_allow_html=True)
+
+            st.markdown(f'''
+                        Accordingly to user-level data we can say with ***{bot_pred}%*** certainty that
+                        the chosen user is a ***{pred}***
+                        ''')
+
+        else:
+            if predicted_user['user_level_prediction']== '0':
+                user_pred = 'human'
+                user_proba = bot_pred = round((1 - float(predicted_user['bot_proba_user'])) * 100)
+            else:
+                user_pred = 'bot'
+                user_proba = round(float(predicted_user['bot_proba_user']) * 100)
+
+            if  predicted_user['tweet_level_prediction'] == '0.0':
+                tweet_pred = 'human'
+                tweet_proba = round((1 - float(predicted_user['tweet_proba'])) * 100)
+            else:
+                tweet_pred = 'bot'
+                tweet_proba = round(float(predicted_user['tweet_proba']) * 100)
+
+
+            st.markdown("<style>.result-font {font-size:20px !important;}</style>",
+                        unsafe_allow_html=True)
+            st.markdown(
+                f'''<p class="result-font">{name} is definitely a {user_pred}.</p>''',
+                unsafe_allow_html=True)
+
+            st.markdown(f'''
+                        Accordingly to user-level data we can say with ***{user_proba}%*** certainty that
+                        the chosen user is a ***{user_pred}***.
+                        ''')
+            st.markdown(f'''
+                        Accordingly to tweet-level data we can say with ***{tweet_proba}%*** certainty that
+                        the chosen user is a ***{tweet_pred}***.
+                        ''')
 
 
 
