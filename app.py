@@ -86,8 +86,8 @@ if selection == "Tweet detection":
 
             st.markdown("<style>.result1-font {font-size:20px !important;}</style>",
                         unsafe_allow_html=True)
-            st.markdown(f'''<p class="result1-font">{name} is propably a {pred}.</p>''',
-                        unsafe_allow_html=True)
+            st.markdown(f'''<p class="result1-font">{name} is probably a {pred}.</p>''',
+                unsafe_allow_html=True)
 
             st.markdown(f'''
                         Accordingly to user-level data we can say with ***{bot_pred}%*** certainty that
@@ -156,7 +156,7 @@ if selection == "Analysis":
 
     st.write(
         """Since there are a lot of people on Twitter, posting a lot things it is hard
-            to distinguih which Twitter post was written and published by a human or a bot.
+            to distinguish which Twitter post was written and published by a human or a bot.
             """)
 
     st.write(
