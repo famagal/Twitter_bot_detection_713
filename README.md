@@ -1,7 +1,7 @@
 # Data analysis
 - Document here the project: Twitter_bot_detection_713
-- Description: Project Description
-- Data Source:
+- Description: This projected was made with the intention to develop an twitter-bot detection app for third party usage.
+- Data Source: https://www.kaggle.com/davidmartngutirrez/twitter-bots-accounts and Twitter API
 - Type of analysis:
 
 Please document the project the better you can.
